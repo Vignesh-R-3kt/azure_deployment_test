@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from './services/api.service';
 
@@ -7,7 +7,7 @@ import { ApiService } from './services/api.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   inputForm: FormGroup;
   users: any[] = [];
 
@@ -17,9 +17,13 @@ export class AppComponent {
     })
   }
 
+  ngOnInit(): void {
+    this.fetchAllUsers()
+  }
+
   fetchAllUsers() {
     this.http.fetchAllData().subscribe((res: any) => {
-      console.log(res);
+      this.users = res;
     })
   }
 
@@ -27,6 +31,7 @@ export class AppComponent {
     const inputValue = this.inputForm.value.data;
     this.http.postNewUser(inputValue).subscribe((res: any) => {
       this.fetchAllUsers();
+      this.inputForm.reset();
     })
   }
 }
