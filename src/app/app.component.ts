@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
   fetchAllUsers() {
     this.http.fetchAllData().subscribe((res: any) => {
-      this.users = res;
+      this.users = res.reverse();
     })
   }
 
